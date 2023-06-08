@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Seiyuu who worked in {{ anime1 }} and {{ anime2 }}</title>
+    <style>
+        .bold {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Seiyuu who worked in {{ anime1 }} and {{ anime2 }}</h1>
+    {% for string in result %}
+<a href="{{ string[1] }}">
+<img alt="{{ string[0] }}" src="{{ string[2] }}" width="42" height="62">
+ <div class="bold">{{ string[0] }}</div>
+ </a>
+   {% endfor %}
+<a href="/"><button>Return to Main Page</button></a>
+</body>
+</html>

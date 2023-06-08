@@ -1,21 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Seiyuu who worked in {{ anime1 }} and {{ anime2 }}</title>
-    <style>
-        .bold {
-            font-weight: bold;
-        }
-    </style>
+  <title>Seiyuu results</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Seiyuu who worked in {{ anime1 }} and {{ anime2 }}</h1>
-    {% for string in result %}
+    <h1>Seiyuu in Common</h1>
+    <h2>The following seiyuu worked in:</h2>
+    <h2>{{ anime1 }}</h2> 
+    <h2>and</h2> 
+    <h2>{{ anime2 }}</h2>
+
+  <div class="container">
+    <div class="card">
+      <div class="gallery">
+        {% for string in result %}
+          <div class="card-item">
 <a href="{{ string[1] }}">
-<img alt="{{ string[0] }}" src="{{ string[2] }}" width="42" height="62">
- <div class="bold">{{ string[0] }}</div>
- </a>
-   {% endfor %}
-<a href="/"><button>Return to Main Page</button></a>
+            <div class="image-container">
+              <img src="{{ string[2] }}" alt="Image">
+            </div>
+</a>
+            <div class="card-content">
+              <p>{{ string[0] }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+<a href="/"><button >Try another search!</button></a>
 </body>
 </html>
+
