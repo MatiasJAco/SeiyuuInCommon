@@ -2,18 +2,14 @@
 <html>
 <head>
     <title>Seiyuu in Common</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="/static/styles.css">
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             font-family: 'Roboto', sans-serif;
-            margin: 0 !important;
-            padding: 0 !important;
-            display: block !important;
-            flex-direction: unset !important;
-            align-items: unset !important;
-            justify-content: unset !important;
+            margin: 0;
+            padding: 0;
         }
         
         .main-container {
@@ -43,14 +39,13 @@
         }
         
         .search-section {
-            background: white !important;
-            border-radius: 20px !important;
-            padding: 30px !important;
-            margin: 0 auto 30px auto !important;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
-            display: none !important;
-            max-width: 600px !important;
-            width: 100% !important;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 0 auto 30px auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+            max-width: 800px;
         }
         
         .search-section h2 {
@@ -106,13 +101,12 @@
         }
         
         .comparison-section {
-            background: white !important;
-            border-radius: 20px !important;
-            padding: 40px !important;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
-            margin: 0 auto !important;
-            max-width: 600px !important;
-            width: 100% !important;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin: 0 auto;
+            max-width: 800px;
         }
         
         .comparison-section h2 {
@@ -124,7 +118,7 @@
         }
         
         .form-container {
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
         }
         
@@ -177,8 +171,6 @@
             white-space: nowrap;
             min-width: 320px;
             display: inline-block;
-            text-align: center;
-            line-height: 1;
         }
         
         .submit-container input[type="submit"]:hover {
@@ -276,8 +268,6 @@
                 min-width: 280px;
                 padding: 15px 40px;
                 font-size: 16px;
-                text-align: center;
-                line-height: 1;
             }
         }
     </style>
@@ -320,7 +310,7 @@
         </div>
     </div>
     
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="/static/script.js"></script>
     <script>
         // Debug: Check if searchAnime function is loaded
         window.addEventListener('load', function() {
@@ -330,4 +320,3 @@
     </script>
 </body>
 </html>
-
