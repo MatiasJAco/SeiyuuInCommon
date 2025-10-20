@@ -3,18 +3,331 @@
 <head>
     <title>Seiyuu in Common</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            min-height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: block !important;
+            flex-direction: unset !important;
+            align-items: unset !important;
+            justify-content: unset !important;
+        }
+        
+        .main-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .header h1 {
+            color: white;
+            font-size: 48px;
+            font-weight: 700;
+            margin: 0 0 20px 0;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+            margin: 0;
+            font-weight: 300;
+        }
+        
+        .search-section {
+            background: white !important;
+            border-radius: 20px !important;
+            padding: 30px !important;
+            margin: 0 auto 30px auto !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+            display: none !important;
+            max-width: 600px !important;
+            width: 100% !important;
+        }
+        
+        .search-section h2 {
+            color: #333;
+            font-size: 24px;
+            margin: 0 0 20px 0;
+            text-align: center;
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0;
+        }
+        
+        .input-container input[type="text"] {
+            flex: 1;
+            max-width: 400px;
+            height: 50px;
+            padding: 0 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .input-container input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .input-container button {
+            height: 50px;
+            padding: 0 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        
+        .input-container button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .search-results {
+            margin-top: 20px;
+        }
+        
+        .comparison-section {
+            background: white !important;
+            border-radius: 20px !important;
+            padding: 40px !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+            margin: 0 auto !important;
+            max-width: 600px !important;
+            width: 100% !important;
+        }
+        
+        .comparison-section h2 {
+            color: #333;
+            font-size: 28px;
+            margin: 0 0 30px 0;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .form-group input[type="text"] {
+            width: 100%;
+            height: 50px;
+            padding: 0 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        .form-group input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .submit-container {
+            text-align: center;
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .submit-container input[type="submit"] {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 15px 60px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            white-space: nowrap;
+            min-width: 320px;
+            display: inline-block;
+            text-align: center;
+            line-height: 1;
+        }
+        
+        .submit-container input[type="submit"]:hover {
+            transform: translateY(-2px);
+        }
+        
+        .anime-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .anime-card {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .anime-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+        
+        .anime-image {
+            width: 100%;
+            height: 120px;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .anime-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .anime-info h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0 0 5px 0;
+            color: #333;
+            line-height: 1.3;
+        }
+        
+        .anime-type {
+            font-size: 12px;
+            color: #666;
+            margin: 0 0 3px 0;
+        }
+        
+        .anime-score {
+            font-size: 12px;
+            color: #28a745;
+            font-weight: 600;
+            margin: 0 0 3px 0;
+        }
+        
+        .anime-url {
+            font-size: 11px;
+            color: #667eea;
+            margin: 0;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 20px 15px;
+            }
+            
+            .header h1 {
+                font-size: 36px;
+            }
+            
+            .input-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .input-container input[type="text"] {
+                max-width: 100%;
+            }
+            
+            .comparison-section {
+                padding: 25px;
+            }
+            
+            .submit-container input[type="submit"] {
+                min-width: 280px;
+                padding: 15px 40px;
+                font-size: 16px;
+                text-align: center;
+                line-height: 1;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Seiyuu in Common</h1>
-    <h2>Look for seiyuu who worked in the following two anime</h2>
-    <h2>Just paste the url for the anime media you want to compare, eg. https://myanimelist.net/anime/14719/JoJo_no_Kimyou_na_Bouken_TV</h2>
-    <form action="/result" method="post">
-        <label for="text1">Anime MAL url 1:</label>
-        <input type="text" id="text1" name="text1"><br><br>
-        <label for="text2">Anime MAL url 2:</label>
-        <input type="text" id="text2" name="text2"><br><br>
-        <input type="submit" value="Search">
-    </form>
+    <div class="main-container">
+        <div class="header">
+            <h1>Seiyuu in Common</h1>
+            <p>Discover voice actors who worked in multiple anime series</p>
+        </div>
+        
+        <!-- Anime Search Section -->
+        <div class="search-section" id="searchSection">
+            <h2>Search for Anime</h2>
+            <div class="input-container">
+                <input type="text" id="animeSearch" placeholder="Enter anime title to search..." />
+                <button id="searchButton">Search</button>
+            </div>
+            <div id="searchResults" class="search-results"></div>
+        </div>
+        
+        <!-- Seiyuu Comparison Section -->
+        <div class="comparison-section">
+            <h2>Find Common Voice Actors</h2>
+            <div class="form-container">
+                <form action="/result" method="post">
+                    <div class="form-group">
+                        <label for="text1">Anime 1:</label>
+                        <input type="text" id="text1" name="text1" placeholder="Paste MAL URL or search above">
+                    </div>
+                    <div class="form-group">
+                        <label for="text2">Anime 2:</label>
+                        <input type="text" id="text2" name="text2" placeholder="Paste MAL URL or search above">
+                    </div>
+                    <div class="submit-container">
+                        <input type="submit" value="Find Common Voice Actors">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        // Debug: Check if searchAnime function is loaded
+        window.addEventListener('load', function() {
+            console.log('Page loaded');
+            console.log('searchAnime function exists:', typeof searchAnime);
+        });
+    </script>
 </body>
 </html>
 

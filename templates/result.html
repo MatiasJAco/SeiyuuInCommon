@@ -1,35 +1,340 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Seiyuu results</title>
+  <title>Seiyuu Results</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    .results-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .anime-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .anime-titles {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .anime-title-card {
+      background: white;
+      border-radius: 15px;
+      padding: 20px 30px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      flex: 1;
+      min-width: 200px;
+      max-width: 400px;
+    }
+    
+    .anime-title-card.anime1 {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .anime-title-card.anime2 {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+    }
+    
+    .anime-title-card h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.4;
+      text-align: center;
+    }
+    
+    .vs-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      border-radius: 50%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .vs-divider span {
+      font-size: 16px;
+      font-weight: 700;
+      color: #333;
+    }
+    
+    .actor-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .actor-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .actor-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    
+    .actor-image {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .actor-info h3 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+    }
+    
+    .actor-info a {
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    
+    .actor-info a:hover {
+      text-decoration: underline;
+    }
+    
+    .characters-section {
+      padding: 25px;
+    }
+    
+    .anime-comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+    
+    .anime-column {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+    }
+    
+    .anime-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 15px;
+      text-align: center;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e9ecef;
+    }
+    
+    .characters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+    }
+    
+    .character-item {
+      text-align: center;
+      background: white;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+    }
+    
+    .character-item:hover {
+      transform: translateY(-2px);
+    }
+    
+    .character-image {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 10px;
+      display: block;
+    }
+    
+    .character-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+      margin: 0;
+      line-height: 1.3;
+    }
+    
+    .character-name a {
+      color: #333;
+      text-decoration: none;
+    }
+    
+    .character-name a:hover {
+      color: #667eea;
+      text-decoration: underline;
+    }
+    
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+    }
+    
+    .no-results h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    
+    .back-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 12px 30px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.2s ease;
+      margin-top: 20px;
+    }
+    
+    .back-button:hover {
+      transform: translateY(-2px);
+      color: white;
+    }
+    
+    @media (max-width: 768px) {
+      .anime-titles {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .vs-divider {
+        transform: rotate(90deg);
+      }
+      
+      .anime-title-card {
+        min-width: 250px;
+      }
+      
+      .anime-comparison {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .actor-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+      }
+      
+      .characters-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="results-container">
     <h1>Seiyuu in Common</h1>
-    <h2>The following seiyuu worked in:</h2>
-    <h2>{{ anime1 }}</h2> 
-    <h2>and</h2> 
-    <h2>{{ anime2 }}</h2>
-
-  <div class="container">
-    <div class="card">
-      <div class="gallery">
-        {% for string in result %}
-          <div class="card-item">
-<a href="{{ string[1] }}">
-            <div class="image-container">
-              <img src="{{ string[2] }}" alt="Image">
-            </div>
-</a>
-            <div class="card-content">
-              <p>{{ string[0] }}</p>
-            </div>
-          </div>
-        {% endfor %}
+    <div class="anime-header">
+      <h2>Voice actors who worked in both:</h2>
+      <div class="anime-titles">
+        <div class="anime-title-card anime1">
+          <h3>{{ anime1 }}</h3>
+        </div>
+        <div class="vs-divider">
+          <span>VS</span>
+        </div>
+        <div class="anime-title-card anime2">
+          <h3>{{ anime2 }}</h3>
+        </div>
       </div>
     </div>
+
+    {% if result %}
+      <div class="results-count">
+        <p style="text-align: center; color: #666; font-size: 16px; margin: 20px 0;">
+          Found <strong>{{ result|length }}</strong> voice actor{{ 's' if result|length != 1 else '' }} in common
+        </p>
+      </div>
+      
+      {% for actor in result %}
+        <div class="actor-card">
+          <div class="actor-header">
+            <img src="{{ actor.actor_info.image }}" alt="{{ actor.actor_info.name }}" class="actor-image">
+            <div class="actor-info">
+              <h3>{{ actor.actor_info.name }}</h3>
+              <a href="{{ actor.actor_info.url }}" target="_blank">View on MyAnimeList</a>
+            </div>
+          </div>
+          
+          <div class="characters-section">
+            <div class="anime-comparison">
+              <div class="anime-column">
+                <div class="anime-title" style="color: #667eea;">{{ anime1 }}</div>
+                <div class="characters-grid">
+                  {% for character in actor.characters_anime1 %}
+                    <div class="character-item">
+                      {% if character.image %}
+                        <img src="{{ character.image }}" alt="{{ character.name }}" class="character-image">
+                      {% else %}
+                        <div class="character-image" style="background: #e9ecef; display: flex; align-items: center; justify-content: center; color: #666; font-size: 12px;">No Image</div>
+                      {% endif %}
+                      <p class="character-name">
+                        <a href="{{ character.url }}" target="_blank">{{ character.name }}</a>
+                      </p>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+              
+              <div class="anime-column">
+                <div class="anime-title" style="color: #764ba2;">{{ anime2 }}</div>
+                <div class="characters-grid">
+                  {% for character in actor.characters_anime2 %}
+                    <div class="character-item">
+                      {% if character.image %}
+                        <img src="{{ character.image }}" alt="{{ character.name }}" class="character-image">
+                      {% else %}
+                        <div class="character-image" style="background: #e9ecef; display: flex; align-items: center; justify-content: center; color: #666; font-size: 12px;">No Image</div>
+                      {% endif %}
+                      <p class="character-name">
+                        <a href="{{ character.url }}" target="_blank">{{ character.name }}</a>
+                      </p>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="no-results">
+        <h2>No Common Voice Actors Found</h2>
+        <p>These anime don't share any Japanese voice actors.</p>
+      </div>
+    {% endif %}
+    
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="/" class="back-button">Try Another Search!</a>
+    </div>
   </div>
-<a href="/"><button >Try another search!</button></a>
 </body>
 </html>
 
